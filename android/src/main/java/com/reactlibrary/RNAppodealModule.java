@@ -45,13 +45,13 @@ public class RNAppodealModule extends ReactContextBaseJavaModule implements Inte
 
 	@ReactMethod
 	public void showToast(String message) {
-		Toast.makeText(getReactApplicationContext(), message, 0).show();
+		Toast.makeText(getReactApplicationContext(), message, Toast.LENGTH_SHORT).show();
 	}
 
 	@ReactMethod
-	public void initialize(String appKey, int adTypes) {
-		Appodeal.setFramework("react-native", "2.1.4");
-		Appodeal.initialize(getCurrentActivity(), appKey, adTypes);
+	public void initialize(String appKey, int adTypes, boolean contestValue ) {
+		Appodeal.setFramework("react-native", "2.4.2");
+		Appodeal.initialize(getCurrentActivity(), appKey, adTypes, contestValue);
 	}
 
 	@ReactMethod
@@ -202,26 +202,6 @@ public class RNAppodealModule extends ReactContextBaseJavaModule implements Inte
 	}
 
 	@ReactMethod
-	public void setCustomStringRule(String name, String value){
-		Appodeal.setCustomRule(name, value);
-	}
-
-	@ReactMethod
-	public void setCustomBooleanRule(String name, boolean value){
-		Appodeal.setCustomRule(name, value);
-	}
-
-	@ReactMethod
-	public void setCustomIntegerRule(String name, int value){
-		Appodeal.setCustomRule(name, value);
-	}
-
-	@ReactMethod
-	public void setCustomDoubleRule(String name, double value){
-		Appodeal.setCustomRule(name, value);
-	}
-
-	@ReactMethod
 	public void trackInAppPurchase(double amount, String currency){
 		Appodeal.trackInAppPurchase(getCurrentActivity(), amount, currency);
 	}
@@ -231,10 +211,10 @@ public class RNAppodealModule extends ReactContextBaseJavaModule implements Inte
 		String placement = args.hasKey("placement") ? args.getString("placement") : null;
 		WritableMap params = Arguments.createMap();
 		if (placement == null) {
-			params.putInt("amount", Appodeal.getRewardParameters().first);
+			params.putDouble("amount", Appodeal.getRewardParameters().first);
 			params.putString("currency", Appodeal.getRewardParameters().second);
 		} else {
-			params.putInt("amount", Appodeal.getRewardParameters(placement).first);
+			params.putDouble("amount", Appodeal.getRewardParameters(placement).first);
 			params.putString("currency", Appodeal.getRewardParameters(placement).second);
 		}
 
@@ -342,7 +322,7 @@ public class RNAppodealModule extends ReactContextBaseJavaModule implements Inte
 	}
 
 	@Override
-	public void onNonSkippableVideoLoaded() {
+	public void onNonSkippableVideoLoaded(boolean b) {
 		sendEventToJS("onNonSkippableVideoLoaded", null);
 	}
 
@@ -364,15 +344,15 @@ public class RNAppodealModule extends ReactContextBaseJavaModule implements Inte
 	}
 
 	@Override
-	public void onRewardedVideoFinished(int amount, String currency) {
+	public void onRewardedVideoFinished(double amount, String currency) {
 		WritableMap params = Arguments.createMap();
-		params.putInt("amount", amount);
+		params.putDouble("amount", amount);
 		params.putString("currency", currency);
 		sendEventToJS("onRewardedVideoFinished", params);
 	}
 
 	@Override
-	public void onRewardedVideoLoaded() {
+	public void onRewardedVideoLoaded(boolean b) {
 		sendEventToJS("onRewardedVideoLoaded", null);
 	}
 

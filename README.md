@@ -64,6 +64,70 @@ maven {
 
 + Enable multiDex in your application. Follow [this](https://developer.android.com/studio/build/multidex.html) documentation to enable it.
 
++ add required modules by appodeal sdk
+
+_android/app/build.gradle_
+```gradle
+    compile(name: 'adcolony-sdk-3.3.0', ext: 'aar')
+    compile name: 'mobvista-8.11.0-alphab', ext: 'aar'
+    compile name: 'mobvista-8.11.0-common', ext: 'aar'
+    compile name: 'mobvista-8.11.0-interstitial', ext: 'aar'
+    compile name: 'mobvista-8.11.0-interstitialvideo', ext: 'aar'
+    compile name: 'mobvista-8.11.0-mvdownloads', ext: 'aar'
+    compile name: 'mobvista-8.11.0-mvjscommon', ext: 'aar'
+    compile name: 'mobvista-8.11.0-mvnative', ext: 'aar'
+    compile name: 'mobvista-8.11.0-nativeex', ext: 'aar'
+    compile name: 'mobvista-8.11.0-playercommon', ext: 'aar'
+    compile name: 'mobvista-8.11.0-reward', ext: 'aar'
+    compile name: 'mobvista-8.11.0-videocommon', ext: 'aar'
+    compile name: 'mobvista-8.11.0-videofeeds', ext: 'aar'
+    compile name: 'mobvista-8.11.0-videojs', ext: 'aar'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+```
+
++ update gradle configuration
+
+**_android/app/build.gradle_**
+```gradle
+    android {
+        configurations {
+            all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+            all*.exclude module: 'okio'
+        }
+        
+        ...
+        
+        compileSdkVersion 26
+        buildToolsVersion "26.0.0"
+        
+        ...
+        
+        defaultConfig {
+         ...
+         targetSdkVersion 26
+         ...
+        }
+    }
+```
+
++ Add local libs to repositories
+
+**_android/build.gradle_**
+```gradle
+allprojects {
+    repositories {
+    ...
+    flatDir {
+        dirs 'libs'
+     }
+    ...
+    }
+}
+```
+
++ download appodeal sdk 2.4.2, unzip and copy all .aar files into _android/app/libs_
+
 ## Usage
 ```javascript
 import { Appodeal } from 'react-native-appodeal';
@@ -115,7 +179,7 @@ Appodeal.requestAndroidMPermissions();
 Appodeal.muteVideosIfCallsMuted(bool);
 
 //Initialize Appodeal SDK:
-Appodeal.initialize("your-appodeal-application-key", adtypes);
+Appodeal.initialize("your-appodeal-application-key", adtypes, bool);
 
 //Display Ads, can return bool if ads was shown or not in a callback parameter:
 Appodeal.show(adtypes, "placement_name", (result) => console.log(result));
@@ -173,3 +237,6 @@ Appodeal.addEventListener('onNonSkippableVideoShown', () => console.log("Non Ski
 
 2.1.4 
 + release
+
+2.4.2
++ update sdk for android
