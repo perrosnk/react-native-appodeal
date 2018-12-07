@@ -90,8 +90,13 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
+
+    configurations {
+        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+        all*.exclude group: 'com.squareup.okio', module: 'okio'
+        }
 
     defaultConfig {
         applicationId "com.appodealreactdevelop"
@@ -102,6 +107,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -143,6 +149,9 @@ android {
 }
 
 repositories {
+    maven {
+      url 'https://maven.google.com'
+    }
     jcenter() 
     mavenCentral()
     maven {

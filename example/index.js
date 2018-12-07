@@ -116,7 +116,7 @@ export default class AppodealReactDevelop extends Component {
       <View style={styles.container}>
         
         <ModalPicker
-          style={{width: 200}}
+          style={{width: 200, height: 50}}
           data={data}
           initValue="AdType"
           onChange={(option)=>{ this.adTypeChanged(option.key) }} />
